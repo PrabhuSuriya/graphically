@@ -1,0 +1,10 @@
+{
+    "table": "shipments_data",
+    "master_circle": "source_id",
+    "parent_circle": "new_shipment_id",
+    "children_circle": "shipment_id",
+    "parent_size": "new_weight",
+    "children_size": "weight",
+    "parent_tooltip": "new_cost",
+    "children_tooltip": "cost"
+}

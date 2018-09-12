@@ -25,18 +25,20 @@ angular app will be available on `http://localhost:33000`
 5. Setup config data. navigate to swagger and hit the below endpoint with the default config data.
 `POST /rest/graph/config`
 data:
+```json
 {
-	"shipment_id":"1",
-	 "source_id":"a123",
-	 "destination_id":"z789",
-	 "date":"2018-05-06",
-	 "weight":"25000",
-	 "cost":"250",
-	 "new_shipment_id":"1",
-	 "new_weight":"2500",
-	 "new_cost":"250",
-	 "total_tls":"1",
- }
+	"shipment_id": "1",
+	"source_id": "a123",
+	"destination_id": "z789",
+	"date": "2018-05-06",
+	"weight": "25000",
+	"cost": "250",
+	"new_shipment_id": "1",
+	"new_weight": "2500",
+	"new_cost": "250",
+	"total_tls": "1",
+}
+```
  
  6. Open angular app in browser, upload the below csv file to generate the graph 
 `graphically/data/ShipmentData.csv`

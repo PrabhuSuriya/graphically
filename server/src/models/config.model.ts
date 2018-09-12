@@ -1,5 +1,7 @@
+/**
+ * to store the config data
+ */
 export interface ConfigModel {
-
     table: string
     master_circle: string;
     parent_circle: string;

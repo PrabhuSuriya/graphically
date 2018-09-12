@@ -7,6 +7,9 @@ import { throwError, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ConfigModel } from '../models/config.model';
 
+/**
+ * provides all methods necessary to interact with graphically DB
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -17,6 +20,9 @@ export class GraphicallyDatabaseService {
 
   }
 
+  /**
+   * gets all shipments information
+   */
   getShipments(): Observable<ShipmentModel[]> {
     return this._http.get<ShipmentModel[]>(this.getApiEndpoint(environment.api.shipmentList))
       .pipe(
@@ -27,6 +33,9 @@ export class GraphicallyDatabaseService {
       )
   }
 
+  /**
+   * gets the latest config added in the DB
+   */
   getLatestConfig(): Observable<ConfigModel> {
     return this._http.get<ConfigModel>(this.getApiEndpoint(environment.api.latestConfig))
       .pipe(
@@ -37,8 +46,11 @@ export class GraphicallyDatabaseService {
       )
   }
 
-
-  private getApiEndpoint(endpoint: string): string {
+  /**
+   * generates the complete endpoint based on the rest domain set in env and endpoint passed
+   * @param endpoint endpoint to be generated
+   */
+  getApiEndpoint(endpoint: string): string {
     return `${environment.api.root}${endpoint}`
   }
 }

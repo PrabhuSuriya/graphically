@@ -42,6 +42,15 @@ export class graphicallyDB {
     }
 
     /**
+     * Delete all shipments from DB
+     */
+    public async deleteShipments(): Promise<boolean> {
+        const deleteQuery = `DELETE FROM shipments_data`;        
+        await this.pool.query(deleteQuery);
+        return true;
+    }
+
+    /**
      * Get a list of all available configs from DB
      */
     public async getConfigs(): Promise<ConfigModel[]> {
@@ -71,7 +80,6 @@ export class graphicallyDB {
                             VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
         const values = [data.table, data.master_circle, data.parent_circle, data.children_circle, data.parent_size, data.children_size, data.parent_tooltip, data.children_tooltip];
         const { rows } = await this.pool.query(insertQuery, values);
-        console.log(rows);
         return rows as ConfigModel;
     }
 }

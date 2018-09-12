@@ -1,6 +1,6 @@
 import { Service } from "@tsed/common";
 /**
- * To server a key value pair singleton memory service
+ * To serve as a key value pair singleton memory service
  */
 @Service()
 export class MemoryStorage {

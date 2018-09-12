@@ -7,7 +7,8 @@ export const environment = {
   api: {
     root: 'http://localhost:3000/rest',
     shipmentList: '/graph/shipments',
-    latestConfig: '/graph/config'
+    latestConfig: '/graph/config',
+    uploadURL: '/graph/upload'
   }
 };
 

@@ -1,1 +1,12 @@
-<svg width="500" height="500"></svg>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <angular-file-uploader [config]="afuConfig" (ApiResponse)="onFileUploadComplete($event)">
+      </angular-file-uploader>
+    </div>
+    <div class="col-md-6 text-center">
+      <h3 *ngIf="message">{{message}}</h3>
+      <svg width="500" height="500"></svg>
+    </div>
+  </div>
+</div>

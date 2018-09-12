@@ -1,3 +1,6 @@
+/**
+ * to hold the shipment data
+ */
 export class ShipmentModel {
     shipment_id: number;
     source_id: string;

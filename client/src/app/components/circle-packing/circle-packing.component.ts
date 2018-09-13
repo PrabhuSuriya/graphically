@@ -23,6 +23,7 @@ export class CirclePackingComponent implements OnInit, OnDestroy {
   config: ConfigModel;
   afuConfig: any;
   message: string;
+  hierarchyInfo: any[];
   constructor(private _gSvc: GraphicallyDatabaseService) { }
 
   ngOnInit() {
@@ -33,7 +34,6 @@ export class CirclePackingComponent implements OnInit, OnDestroy {
       },
       formatsAllowed: '.csv'
     };
-
     //get the shipment data from DB and build graph
     this.getShipmentData();
   }
@@ -49,10 +49,16 @@ export class CirclePackingComponent implements OnInit, OnDestroy {
       .subscribe(([data, config]) => {
         console.log(data, config)
 
+        //build the hierarchy information with customizable fields for each level
+        let hierarchyInfo = [
+          { grouping: config.parent_circle, tooltip: config.parent_tooltip, size: config.parent_size },
+          { grouping: config.children_circle, tooltip: config.children_tooltip, size: config.children_size },
+        ]
         //show info to user if there is no data in DB
         this.message = data.length > 0 ? '' : 'Please upload the shipments csv file!';
         if (data.length > 0) {
-          this.shipmentData = this.processShipmentData(data, config)
+          this.shipmentData = this.processShipmentData(data, config, hierarchyInfo)
+          console.log(this.shipmentData);
           this.buildGraph(this.shipmentData)
         }
       })
@@ -62,47 +68,48 @@ export class CirclePackingComponent implements OnInit, OnDestroy {
    * 
    * @param data process the flat shipment data to hierarchial data
    * @param config flat shipment data
+   * @param hierarchyInfo hierarchy information
    */
-  processShipmentData(data: ShipmentModel[], config: ConfigModel): ShipmentData {
+  processShipmentData(data: ShipmentModel[], config: ConfigModel, hierarchyInfo: any): ShipmentData {
     let result: ShipmentData = new ShipmentData();
 
     //set master id
     result.id = data[0][config.master_circle];
-    //set nested parent circles
-    result.children = this.getChildren(data, config.parent_circle, config.parent_tooltip, config.parent_size)
-    //set nested children circles
-    result.children.forEach((child) => {
-      child.children = this.getChildren(child.children, config.children_circle, config.children_tooltip, config.children_size, false)
-    })
 
-    console.log(result)
+    //set nested parent circles
+    result.children = this.getChildren(hierarchyInfo, data, 0)
     return result;
   }
   /**
    * 
+   * @param hierarchyInfo hierarchy information
    * @param data flat shipment data
    * @param grouping group by property
    * @param tooltip property name holding tooltip value
    * @param size property name holding size value
    * @param includeChildInfo whether to include children infor, default-true
    */
-  getChildren(data: any[], grouping: string, tooltip: string, size: string, includeChildInfo: boolean = true): ShipmentData[] {
+  getChildren(hierarchyInfo: any[], data: any[], level: number = 0): ShipmentData[] {
     let result: any[] = []
+
+    let { grouping, tooltip, size } = hierarchyInfo[level];
 
     let groupedData = lodash.groupBy(data, (x) => {
       return x[grouping];
     })
 
+    let isLastLevel = level == hierarchyInfo.length - 1;
     for (let key in groupedData) {
       let item = groupedData[key][0];
       result.push({
         id: key,
         tooltip: item[tooltip],
         size: item[size],
-        children: groupedData[key]
+        children: isLastLevel ? null : this.getChildren(hierarchyInfo, groupedData[key], level + 1)
       })
     }
-    if (!includeChildInfo) {
+    //delete children field for last level
+    if (isLastLevel) {
       result.forEach(x => {
         delete x.children
       })

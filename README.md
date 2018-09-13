@@ -41,16 +41,14 @@ A project to visualize data as packed circles using D3.js, Angular, express, Ts.
 
 	```json
 	{
-		"shipment_id": "1",
-		"source_id": "a123",
-		"destination_id": "z789",
-		"date": "2018-05-06",
-		"weight": "25000",
-		"cost": "250",
-		"new_shipment_id": "1",
-		"new_weight": "2500",
-		"new_cost": "250",
-		"total_tls": "1",
+	    "table": "shipments_data",
+	    "master_circle": "source_id",
+	    "parent_circle": "new_shipment_id",
+	    "children_circle": "shipment_id",
+	    "parent_size": "new_weight",
+	    "children_size": "weight",
+	    "parent_tooltip": "new_cost",
+	    "children_tooltip": "cost"
 	}
 	```
  
